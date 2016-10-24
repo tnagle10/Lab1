@@ -105,6 +105,7 @@ namespace Lab1
 
 
             // Get length and width from user
+            Console.WriteLine("Welcome to Grand Circus' Room Detail Generator!");
             Console.WriteLine("Enter Length:");
             string lengthS = Console.ReadLine();
             Console.WriteLine("Enter Width:");
