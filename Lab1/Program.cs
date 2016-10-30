@@ -9,62 +9,74 @@ namespace Lab1
     class Program
     {
 
-        private static int[] getAreaPerimeter(int [] input)
+        private static double calcArea(double length, double width)
         {   
-            /* Name: getAreaPerimeter
-             * Description: This method takes a length and width as input, and output area and perimeter
-             * Input: integer array - Length and Width
-             * Output: integer array - Area and Perimeter
+            /* Name: calcArea
+             * Description: This method takes a length and width as input, and outputs area
+             * Input: float array - Length and Width
+             * Output: float array - Area
              */
-             
-            int length = input[0];
-            int width = input[1];
-            int area = length * width;
-            int perimeter = 2 * (length * width);
-            int[] outAreaPerimiter = { area, perimeter };
-            return outAreaPerimiter;
+            double area = length * width;
+            return area;
+        }
+
+        private static double calcPerimeter(double length, double width)
+        {
+            /* Name: calcArea
+             * Description: This method takes a length and width as input, and outputs area
+             * Input: float array - Length and Width
+             * Output: float array - Area
+             */
+
+            double perimeter = 2 * (length + width);
+            return perimeter;
 
         }
 
-        private static int convToIntWithErrorCheck(string Input)
+        private static double calcVolume(double length, double width, double height)
+        {
+            /* Name: calcArea
+             * Description: This method takes a length and width as input, and outputs area
+             * Input: float array - Length and Width
+             * Output: float array - Area
+             */
+
+            // Calculate volu,e
+            double volume = length*width*height;
+            return volume;
+
+        }
+
+        private static double convToDoubleWithErrorCheck(string Input)
         {
 
-            /* Name: convToIntWithErrorCheck
-             * Description:  This method converts a string to integer using Convert.ToInt32().  
+            /* Name: convTofloatWithErrorCheck
+             * Description:  This method converts a string to float using Convert.Tofloat().  
              *               It also implements try and catch error checking
-             * Input: String that needs to be converted to integer
-             * Output: If input string is valid,   returns integer value of string
+             * Input: String that needs to be converted to float
+             * Output: If input string is valid,   returns float value of string
              *         If input string is invalid, returns 0
              */
-           
 
-            try
-            {
-                // Verify user input is in correct format 
-                Int32 Output = Convert.ToInt32(Input);
-                return Output;
-            }
-            catch (System.OverflowException)
-            {
-                System.Console.WriteLine(
-                    "The conversion from string to number overflowed.\n");
-                return 0;
-            }
-            catch (System.FormatException)
-            {
-                System.Console.WriteLine(
-                    "The string is not formatted as a number.\n");
-                return 0;
-            }
-            catch (System.ArgumentNullException)
-            {
-                System.Console.WriteLine(
-                    "The string is null.");
-                return 0;
-            }
+
+
+            // Verify user input is in correct format 
+                double Output = 0;
+                if (double.TryParse(Input,out Output))
+                 {
+                    
+                    return Output;
+                }
+               
+                else
+                {
+                    Console.WriteLine("Invalid Number");
+                    return 0;
+                }
+           
         }
   
-        private static int keepGoing()
+        private static bool keepGoing()
         {
             /* Name: keepGoing
             * Description:  This method implements a loop to determine if users wants to continue
@@ -85,22 +97,22 @@ namespace Lab1
                 input = Console.ReadLine();
                 if (input == "y")
                 {
-                    return 0;
+                    return false;
                 }
 
             }
             
-                return 1;
+                return true;
          
         }
         
-        private static int [] getLengthWidth()
+        private static void getLengthWidth(out double lengthD, out double widthD)
         {
             /* Name: getLengthWidth
-            * Description:  This method takes an input Length and Width in integer and 
-            *               returns Area and Permiter integers.  
+            * Description:  This method takes an input Length and Width in double and 
+            *               returns Area and Permiter in double.  
             * Input: No input.  Get Length and Width from user input
-            * Output: Integer array of Length and Width
+            * Output: Double array of Length and Width
             */
 
 
@@ -108,37 +120,76 @@ namespace Lab1
             Console.WriteLine("Welcome to Grand Circus' Room Detail Generator!");
             Console.WriteLine("Enter Length:");
             string lengthS = Console.ReadLine();
+            
             Console.WriteLine("Enter Width:");
             string widthS = Console.ReadLine();
 
-            //Convert length and width to integer
-            int lengthI = convToIntWithErrorCheck(lengthS);
-            int widthI = convToIntWithErrorCheck(widthS);
-
-            // Output length and width as integer array
-            int[] lengthwidth = { lengthI, widthI };
-            return lengthwidth;
+            //Convert length and width to double
+            lengthD = convToDoubleWithErrorCheck(lengthS);
+            widthD = convToDoubleWithErrorCheck(widthS);
+         
          }
 
-    
-    static void Main(string[] args)
+        private static double getHeight()
+        {
+            /* Name: getLengthWidth
+            * Description:  This method takes an input Height in double and 
+            *               returns Permiter in double.  
+            * Input: No input.  Get Length and Width from user input
+            * Output: float array of Length and Width
+            */
+
+
+            // Get length and width from user
+            Console.WriteLine("Enter Height ");
+            string heightS = Console.ReadLine();
+
+            //Convert length and width to double
+            double heightD = convToDoubleWithErrorCheck(heightS);
+            
+
+            // Output height as double            
+            return heightD;
+        }
+
+
+        static void Main(string[] args)
         {
 
             do
             {
-                // Get Length and Width from user and output results in integer array
-                int [] classroomLW =  getLengthWidth();
+                double length;
+                double width;
+                // Get Length and Width from user and output results in float array
+                getLengthWidth(out length, out width);
 
-                // Get Area and Perimeter and output results in integer array
-                int [] classroomAP =  getAreaPerimeter(classroomLW);
+
+                // Get Area and Perimeter and output results in float array
+                double classroomArea = calcArea(length, width);
+                double classroomPerimeter = calcPerimeter(length, width);
 
                 // Output Area and Perimiter
-                Console.WriteLine("Area: \n" + classroomAP[0]);
-                Console.WriteLine("Perimeter: \n" + classroomAP[1]);
+                Console.WriteLine("Area: \n" + classroomArea);
+                Console.WriteLine("Perimeter: \n" + classroomPerimeter);
                 Console.WriteLine("\n");
 
+                // Ask user if they also want to calculate volume
+                Console.WriteLine("Would you also like to calculate volume?  (y/n)");
+                // If they do, get the height of room and calculate volume
+                if (Console.ReadLine() == "y")
+                {
+                    // Get height of the room
+                    double height = getHeight();
+                    // Calcualte volume of room
+                    double classroomVolume = calcVolume(length, width, height);
+                    // Output Volume
+                    Console.WriteLine("Volume: \n" + classroomVolume);
+                    Console.WriteLine("\n");
+                }
+
+
             }
-            while (keepGoing() != 0);
+            while (keepGoing());
         }
     }
 }
